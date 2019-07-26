@@ -1,0 +1,60 @@
+
+<div class="container">
+    <h3>Task List</h3>
+  <span>Filter By:   </span>
+  <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="notStarted" id="notStarted"  value="not started" [(ngModel)]='listFilter'>
+      <label class="form-check-label" for="notStarted">
+          Not Started
+      </label>
+  </div>
+
+  <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="inProgress" id="inProgress"  value="in progress" [(ngModel)]='listFilter'>
+      <label class="form-check-label" for="inProgress">
+          In Progress
+      </label>
+  </div>
+
+  <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="complete" id="complete"  value="complete" [(ngModel)]='listFilter'>
+      <label class="form-check-label" for="complete">
+          Complete
+      </label>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="resetList()">View All</button>
+</div>
+
+<div class="container" >
+  <table class="table" *ngIf='tasks && tasks.length'>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Assigned User</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let task of filteredTasks">
+              <th scope="row">{{ task.id }}</th>
+              <td>{{ task.taskName }}</td>
+              <td>{{ task.taskDescription }}</td>
+              <td>{{ task.taskStatus }}</td>
+              <td>{{ task.user }}</td>
+              <td class="list-button"><a [routerLink]="['/tasks', task.id]"><button type="button" class="btn btn-primary">Edit</button></a></td>
+              <td class="list-button"><button type="button" (click)="deleteTask(task.id)" class="btn btn-danger">Delete</button></td>
+            </tr>
+
+
+      </tbody>
+    </table>
+</div>
+<div class="container">
+
+    <a class="nav-link" routerLink="/tasks/new" routerLinkActive="active"><button type="button" class="btn btn-primary float-right">Add New Task</button></a>
+
+</div>

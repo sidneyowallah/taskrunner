@@ -1,0 +1,26 @@
+
+<div class="container">
+  <h3>User List</h3>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="users">
+          <tr *ngFor="let user of users | async">
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.userName }}</td>
+
+            <td class="list-button"><a [routerLink]="['/users', user.id]"><button type="button" class="btn btn-primary">Edit</button></a></td>
+            <td class="list-button"><button type="button" (click)="deleteUser(user.id)" class="btn btn-danger">Delete</button></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<div class="container">
+    <a class="nav-link" routerLink="/users/new" routerLinkActive="active"><button type="button" class="btn btn-primary float-right">Add New User</button></a>
+  </div>

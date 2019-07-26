@@ -1,0 +1,25 @@
+<div class="container">
+ <h3>Tasks Assigned to list</h3>
+</div>
+
+
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Task Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr  *ngFor="let lists of list; index as idx">
+            <th scope="row">{{idx+ 1}}</th>
+            <td>{{lists.task}}</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+
+<div class="container">
+  <a class="nav-link" routerLink="/lists" routerLinkActive="active"><button type="button" class="btn btn-primary float-right">Back</button></a>
+</div>

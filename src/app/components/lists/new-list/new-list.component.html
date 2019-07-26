@@ -1,0 +1,64 @@
+<div class="container">
+  <h3>New Todo List</h3>
+  <form  [formGroup]="listFormGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="ListName">List Name</label>
+      <input type="text" id="listName" class="form-control" name="listName" formControlName="listName"/>
+    </div>
+    <div class="form-group">
+      <label for="ListDescription">List Description</label>
+      <input type="text" id="listDescription" class="form-control" name="listDescription" formControlName="listDescription"/>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Task Name</th>
+          <th scope="col">
+            <div style="text-align:center">
+                <button class="btn btn-primary float-right" (click)="addTask()">
+                <span><fa-icon  [icon]="['fas', 'plus']" size="lg" ></fa-icon></span>
+                </button>
+             </div>
+            </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [formGroup]="taskGroup" *ngFor="let taskGroup of listFormGroup.controls.tasks.controls; index as idx">
+          <th scope="row">{{idx+ 1}}</th>
+          <td>
+            <select id="task" class="form-control" name="task" formControlName="task">
+              <option [ngValue]="task.taskName" *ngFor="let task of tasks | async">{{task.taskName}}</option>
+            </select>
+          </td>
+          <td>
+              <div style="text-align:center">
+                  <button class="btn btn-danger float-right" (click)="deleteTask(idx)">
+                      <fa-icon [icon]="['fas', 'trash']" size="lg" ></fa-icon>
+                  </button>
+              </div>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <div style="text-align:center">
+                <div style="text-align:center">
+                    <button class="btn btn-warning float-right" (click)="cancelEdit()">
+                      <span><fa-icon  [icon]="['fas', 'ban']" size="lg" ></fa-icon></span>
+                      <span class="button-span">Cancel</span>
+                    </button>
+                    <button [disabled]="!listFormGroup.valid" type="submit" class="btn btn-success float-right">
+                      <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+                      <span class="button-span">Save List</span>
+                    </button>
+                 </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </form>
+</div>

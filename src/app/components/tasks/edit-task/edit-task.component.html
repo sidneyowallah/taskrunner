@@ -1,0 +1,62 @@
+<div class="container">
+    <h3>Edit Task</h3>
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <label for="taskName">Task Name</label>
+          <input type="text" id="taskName" class="form-control" name="taskName" formControlName="taskName"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <label for="taskDescription">Task Description</label>
+          <input type="text" id="taskDescription" class="form-control" name="taskDescription" formControlName="taskDescription"/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <label for="user">Assigned User</label>
+          <select id="user" class="form-control" name="user" formControlName="user">
+            <option [value]="user.userName" *ngFor="let user of users | async">{{user.userName}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <label for="taskStatus">Task Status</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input " type="radio" id="taskStatus" name="taskStatus" id="notStarted" value="Not Started" formControlName="taskStatus">
+            <label class="form-check-label" for="notStarted">Not Started</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taskStatus" name="taskStatus" id="inProgress" value="In Progress" formControlName="taskStatus">
+            <label class="form-check-label" for="inProgress">In Progress</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taskStatus" name="taskStatus" id="complete" value="Complete" formControlName="taskStatus">
+            <label class="form-check-label" for="complete">Complete</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button [disabled]="!taskForm.valid" type="submit" class="btn btn-success float-right">
+      <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+      <span class="button-span">Save</span>
+    </button>
+  </form>
+
+  <div style="text-align:center">
+    <button class="btn btn-primary float-right" (click)="editToggle()">
+      <span><fa-icon  [icon]="['fas', 'edit']" size="lg" ></fa-icon></span>
+      <span class="button-span">Edit</span>
+    </button>
+  </div>
+</div>

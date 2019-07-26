@@ -1,0 +1,73 @@
+{
+  "users": [
+    {
+      "id": 6,
+      "userName": "sidneyowallah6"
+    },
+    {
+      "id": 7,
+      "userName": "sidneyowalah7"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 13,
+      "taskName": "abcd263",
+      "taskDescription": "do Abcd3",
+      "taskStatus": "Complete",
+      "user": "sidneyowallah6"
+    },
+    {
+      "taskName": "asdf",
+      "taskDescription": "do Abcde",
+      "taskStatus": "Not Started",
+      "user": "sidneyowalah7",
+      "id": 14
+    },
+    {
+      "taskName": "asdf",
+      "taskDescription": "asdf",
+      "taskStatus": "Complete",
+      "user": "sidneyowalah7",
+      "id": 15
+    }
+  ],
+  "lists": [
+    {
+      "id": 2,
+      "listName": "agggsfsfasf",
+      "listDescription": "myList1",
+      "tasks": [
+        {
+          "task": "Task10"
+        },
+        {
+          "task": "abcd263"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "listName": "sfsdf",
+      "listDescription": "asffsadfsd",
+      "tasks": [
+        {
+          "task": "asdf"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "listName": "agggsfsfasf",
+      "listDescription": "asdf",
+      "tasks": [
+        {
+          "task": "abcd263"
+        },
+        {
+          "task": "asdf"
+        }
+      ]
+    }
+  ]
+}

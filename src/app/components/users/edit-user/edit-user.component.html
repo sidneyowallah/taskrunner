@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>Edit User</h3>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <div class="row">
+          <div class="col">
+              <label for="userName">User Name</label>
+              <input type="text" id="userName" class="form-control" name="userName" formControlName="userName"/>
+          </div>
+        </div>
+    </div>
+
+    <button [disabled]="!userForm.valid" type="submit" class="btn btn-success float-right">
+      <fa-icon [icon]="['fas', 'save']" size="lg"></fa-icon>
+      <span class="button-span">Save</span>
+    </button>
+
+  </form>
+
+  <div style="text-align:center">
+    <button class="btn btn-primary float-right" (click)="editToggle()">
+      <span><fa-icon  [icon]="['fas', 'edit']" size="lg" ></fa-icon></span>
+      <span class="button-span">Edit</span>
+    </button>
+  </div>
+</div>
+

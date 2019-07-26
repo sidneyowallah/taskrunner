@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>ToDo lists</h3>
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">List Name</th>
+          <th scope="col">List Description</th>
+          <th scope="col">List Detail</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody *ngIf="lists">
+        <tr *ngFor="let list of lists | async">
+          <th scope="row">{{ list.id }}</th>
+          <td>{{ list.listName }}</td>
+          <td>{{ list.listDescription }}</td>
+          <td class="list-button"><a [routerLink]="['/lists', list.id]"><button type="button" class="btn btn-primary">View List Detail</button></a></td>
+          <td class="list-button"><button type="button" (click)="deleteList(list.id)" class="btn btn-danger">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<div class="container">
+  <a class="nav-link" routerLink="/lists/new" routerLinkActive="active"><button type="button" class="btn btn-primary float-right">Add New List</button></a>
+</div>
