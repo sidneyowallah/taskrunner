@@ -15,7 +15,8 @@ export class ListDetailComponent implements OnInit {
 
   postError = false;
   postErrorMessage = '';
-  private list: Observable<List[]>;
+  list: List[];
+  // list: Observable<List[]>;
 
   constructor(
     private dataService: DataService,
@@ -32,13 +33,27 @@ export class ListDetailComponent implements OnInit {
 getList(id) {
   this.dataService.getList(id)
   .subscribe (
-    list => {
-      this.list = list
+    data => {
+      this.list = data
       console.log(this.list);
     },
     error =>  this.onHttpError(error)
   );
 }
+
+// getUser(id) {
+//   this.dataService.getUser(id).subscribe(data => {
+//     this.userForm.setValue({
+//       id: data['id'],
+//       userName: data['userName']
+//     });
+
+//     this.userData = data;
+//     // console.log('data is ', this.userData.userName);
+//   });
+// }
+
+
 
   deleteList(id) {
       this.dataService

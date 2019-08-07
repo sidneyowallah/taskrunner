@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute} from '@angular/router';
 import { DataService } from '../../../data/data.service';
 import { User } from '../../../data/user';
-import { Observable} from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-user-list',
@@ -13,33 +11,35 @@ import { switchMap } from 'rxjs/operators';
 export class UserListComponent implements OnInit {
   postError = false;
   postErrorMessage = '';
-  private users: Observable<User[]>;
+  users: User[] = [];
 
   constructor(
     private dataService: DataService,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.myUsers();
+    this.getUsers();
 
   }
 
-  myUsers() {
-    this.users = this.route.paramMap.pipe(
-      switchMap(params => {
-       return this.dataService.getUsers();
-      })
+  getUsers() {
+    this.dataService.getUsers().subscribe(
+      users => {
+        this.users = users;
+      },
+      error =>  this.onHttpError(error)
     );
   }
 
   deleteUser(id) {
-    this.dataService
-    .deleteUser(id)
-    .subscribe(
-      result => console.log('success: ', result),
-      error =>  this.onHttpError(error)
-    );
+    debounce(() => {
+      this.dataService
+        .deleteUser(id)
+        .subscribe(
+          result => console.log('success: ', result),
+          error => this.onHttpError(error)
+        );
+    }, 250, false)();
   }
 
   onHttpError(errorResponse: any) {
@@ -49,3 +49,19 @@ export class UserListComponent implements OnInit {
   }
 
 }
+
+function debounce(func, wait, immediate){
+  let timeout;
+  return function() {
+    const context = this;
+    const args = arguments;
+    const later =  () => {
+      timeout = null;
+      if (!immediate) { func.apply(context, args); }
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait)
+    if (callNow) { func.apply(context, args); }
+  };
+};

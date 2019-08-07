@@ -56,6 +56,9 @@ export class EditUserComponent implements OnInit {
         id: data['id'],
         userName: data['userName']
       });
+
+      this.userData = data;
+      // console.log('data is ', this.userData.userName);
     });
   }
 

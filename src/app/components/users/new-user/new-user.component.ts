@@ -50,17 +50,19 @@ export class NewUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
-    if (!this.newUserForm.valid) {
-      return false;
-    } else {
-      this.dataService.createUser(this.newUserForm.value).subscribe(
-        result => {
-          console.log('success: ', result),
-          this.router.navigate(['/users']);
-        },
-        error =>  this.onHttpError(error));
-    }
+    debounce(() => {
+      this.submitted = true;
+      if (!this.newUserForm.valid) {
+        return false;
+      } else {
+        this.dataService.createUser(this.newUserForm.value).subscribe(
+          result => {
+            console.log('success: ', result),
+            this.router.navigate(['/users']);
+          },
+          error =>  this.onHttpError(error));
+      }
+    }, 250, false)();
   }
 
 
@@ -72,3 +74,20 @@ export class NewUserComponent implements OnInit {
 
 
 }
+
+
+function debounce(func, wait, immediate){
+  let timeout;
+  return function() {
+    const context = this;
+    const args = arguments;
+    const later =  () => {
+      timeout = null;
+      if (!immediate) { func.apply(context, args); }
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait)
+    if (callNow) { func.apply(context, args); }
+  };
+};

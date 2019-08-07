@@ -4,7 +4,7 @@ import { Task } from './task';
 import { List } from './list';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
-import { catchError, map, tap} from 'rxjs/operators';
+import { catchError, map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class DataService {
   }
 
   // Update User
-  getUsers(): Observable<User[]> {
+  public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.url + '/users', this.httpOptions).pipe(
       catchError(this.handleError)
     );
@@ -115,8 +115,8 @@ export class DataService {
   }
 
   // Update List
-  updateList(id: number, data): Observable<Task[]> {
-    return this.http.put<Task[]>(this.url + `/lists/${id}`, data, this.httpOptions).pipe(
+  updateList(id: number, data): Observable<List[]> {
+    return this.http.put<List[]>(this.url + `/lists/${id}`, data, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }

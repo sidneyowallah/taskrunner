@@ -1,69 +1,92 @@
-import { TestBed, async, inject, tick, fakeAsync, ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed} from '@angular/core/testing';
 import { UserListComponent } from './user-list.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-// import { of } from 'rxjs/operators';
+import { DataService } from './../../../data/data.service';
+import { Directive, Input, HostListener, NO_ERRORS_SCHEMA } from '@angular/core';
+import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
+
+@Directive({
+  // tslint:disable-next-line: directive-selector
+  selector: '[routerLink]'
+})
+
+// tslint:disable-next-line: directive-class-suffix
+export class RouterLinkDirectiveStub {
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null;
+
+  @HostListener('click')
+  onClick() {
+    this.navigatedTo = this.linkParams;
+  }
+
+}
 
 describe('UserListComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule,
-      ],
-      declarations: [
-        UserListComponent
-      ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
-      ],
-    }).compileComponents();
-  }));
+  let fixture: ComponentFixture<UserListComponent>;
+  let mockDataService;
+  let USERS;
 
   beforeEach(() => {
-    let fixture = TestBed.createComponent(UserListComponent);
-    let component = fixture.componentInstance;
-    let de = fixture.debugElement;
+
+    USERS = [
+      { id: 1, userName: 'sidneyowallah1' },
+      { id: 2, userName: 'sidneyowallah2' },
+      { id: 3, userName: 'sidneyowallah3' }
+    ],
+
+    mockDataService = jasmine.createSpyObj(['getUsers', 'deleteUsers']);
+
+    TestBed.configureTestingModule({
+      declarations: [UserListComponent, RouterLinkDirectiveStub],
+      providers: [
+        { provide: DataService, useValue: mockDataService }
+      ],
+      schemas: [
+        // NO_ERRORS_SCHEMA
+      ]
+    });
+
+    fixture = TestBed.createComponent(UserListComponent);
+
+  });
+
+  it('should have a h3 User List title', () => {
+    const de = fixture.debugElement.query(By.css('h3'));
+    expect(de.nativeElement.textContent).toEqual('User List');
+  });
+
+
+  it('should get users from the service', () => {
+    mockDataService.getUsers.and.returnValue(of(USERS));
     fixture.detectChanges();
+    expect(fixture.componentInstance.users.length).toBe(3);
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(UserListComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+  it('should have the route for each user', () => {
+    mockDataService.getUsers.and.returnValue(of(USERS));
+    fixture.detectChanges();
+    const linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkDirectiveStub));
+    const routerLinks = linkDes.map(de => de.injector.get(RouterLinkDirectiveStub));
+    expect(routerLinks.length).toBe(4);
   });
 
+  it('should create tr for each user in the database', () => {
+    mockDataService.getUsers.and.returnValue(of(USERS));
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('.user-list')).length).toBe(3);
+  });
 
-// describe('UserListComponent', () => {
-//   let component: UserListComponent;
-//   let USERS;
+  it('should have a edit button for each user in the database', () => {
+    mockDataService.getUsers.and.returnValue(of(USERS));
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('.user-edit-btn')).length).toBe(3);
+  });
 
-//   beforeEach(() => {
-//     USERS =[
-//       { id: 1, userName: 'SidneyOwallah1' },
-//       { id: 2, userName: 'SidneyOwallah2' },
-//       { id: 3, userName: 'SidneyOwallah3' },
-//       { id: 4, userName: 'SidneyOwallah4' },
-//       { id: 5, userName: 'SidneyOwallah5' }
-//     ]
+  it('should have a delete button for each user in the database', () => {
+    mockDataService.getUsers.and.returnValue(of(USERS));
+    fixture.detectChanges();
+    expect(fixture.debugElement.queryAll(By.css('.user-delete-btn')).length).toBe(3);
+  });
 
-//     let mockDataService = jasmine.createSpyObj(['myUsers', 'deleteUser']);
-
-//     component = new UserListComponent(mockDataService);
-//   })
-
-//   describe('delete', () =>{
-//     it('should remove the indicated user from the user list', () => {
-//       mockDataService.deleteUser.and.returnValue(of(true))
-//       component.users = USERS;
-//       component.delete(USERS[2]);
-//       expect(component.users.length).toBe(4)
-//     })
-//   })
-
-
-
-})
+});

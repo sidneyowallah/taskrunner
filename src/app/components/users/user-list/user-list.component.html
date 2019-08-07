@@ -11,12 +11,11 @@
           </tr>
         </thead>
         <tbody *ngIf="users">
-          <tr *ngFor="let user of users | async">
+          <tr *ngFor="let user of users" class="user-list">
             <th scope="row">{{ user.id }}</th>
             <td>{{ user.userName }}</td>
-
-            <td class="list-button"><a [routerLink]="['/users', user.id]"><button type="button" class="btn btn-primary">Edit</button></a></td>
-            <td class="list-button"><button type="button" (click)="deleteUser(user.id)" class="btn btn-danger">Delete</button></td>
+            <td class="list-button"><a routerLink="/users/{{user.id}}"><button type="button" class="btn btn-primary user-edit-btn">Edit</button></a></td>
+            <td class="list-button"><button type="button" (click)="deleteUser(user.id)" class="btn btn-danger user-delete-btn">Delete</button></td>
           </tr>
         </tbody>
       </table>
